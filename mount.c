@@ -25,10 +25,12 @@ const char* getUserInput(void) {
 }
 
 const char* getType(const char* device) {
-  static char buf[30];
+  static char buf[1035];
+
   char* type;
-  char* command;
-  strcpy(command, "blkid -s type -o value ");
+  char command[50];
+
+  strcpy(command, "blkid -s TYPE -o value ");
   strcat(command, device);
 
   FILE* fp = popen(command, "r");
@@ -69,7 +71,6 @@ int main() {
   const char* drive = getUserInput();
 
   // mount root
-
   char* root;
   char* rootNum;
 
@@ -102,9 +103,19 @@ int main() {
 
     mountDrive(esp, destination, fstype, opts);
 
+    printf("\nIs there a separate boot partition? Yy/Nn (default: no): ");
+    char* yesBoot;
+    scanf("%s", yesBoot);
+
+    if (yesBoot == "y" || yesBoot == "Y") {
+      goto bootMount;
+    }
 
   } else {
-    // mount /boot if it exists
+    bootMount:
+
+
+
   }
 
   // mount swap if it exists
