@@ -17,11 +17,20 @@ void isRoot(void) {
 const char* getUserInput(void) {
   printf("Running lsblk\n");
   system("lsblk");
-  printf("Please enter the drive you want to mount: ");
+  printf("Please enter the drive you want to mount (eg. /dev/sda) : ");
   char* drive;
   scanf("%s", drive);
 
   return drive;
+}
+
+const char* getDriveNum(void) {
+  printf("Running blkid.\n");
+  system("blkid");
+  printf("Please enter the number of root partition (eg. if root is /dev/sda3, enter 3): ");
+  char* num;
+  scanf("%s", num);
+  return num;
 }
 
 const char* getType(const char* device) {
@@ -72,12 +81,7 @@ int main() {
 
   // mount root
   char* root;
-  char* rootNum;
-
-  printf("Running blkid.\n");
-  system("blkid");
-  printf("Please enter the number of root partition (eg. if root is /dev/sda3, enter 3): ");
-  scanf("%s", rootNum);
+  const char* rootNum = getDriveNum();
 
   strcpy(root, drive);
   strcat(root, rootNum);
@@ -111,12 +115,13 @@ int main() {
       goto bootMount;
     }
 
-  } else {
-    bootMount:
-
-
-
-  }
+}
+  bootMount:
+    const char* bootNum = getDriveNum();
+    char* bootDevice;
+    strcpy(bootDevice, drive);
+    strcat(bootDevice, bootNum);
+    const char* bootType = getType(bootDevice);
 
   // mount swap if it exists
 
