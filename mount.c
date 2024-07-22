@@ -125,6 +125,15 @@ int main() {
 
   // mount swap if it exists
 
+  printf("\nDoes a swap partition exist? Yy/Nn (default: yes): ");
+  char* yesSwap;
+  scanf("%s", yesSwap);
+
+  if (yesSwap == "n" || yesSwap == "N") {
+    // goto mnthome
+  }
+
+
   /*
   ask if /home is separate
   if yes, mount /home
